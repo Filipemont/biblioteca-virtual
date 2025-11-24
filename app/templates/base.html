@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{% block title %} Biblioteca Virtual Unich {% endblock %}</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="icon" href="https://www.unichristus.edu.br/wp-content/themes/2022_unichristus/assets/ico/favicon-96x96.png" type="image/x-icon">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='plugins/bootstrap/css/bootstrap.min.css') }}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='plugins/fontawesome-free/css/all.min.css') }}">
+    <!-- css nativo -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='dist/css/style.css') }}">
+    <!-- sweetalert -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    {% block styles %}
+    {% endblock %}
+
+    {% block head_scripts %}
+    {% endblock %}
+  </head>
+  <body>
+    <header>
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="" style="background: linear-gradient(to right, #5850f0, #100068 65%);">
+      <div class="container" style="display: flex; height: 95px;">
+        <div style="width : 50%; align-content: center;">
+          <h2 class="title" style="color:#fff"> Biblioteca Virtual </h2>
+        </div>
+        <div style="width : 50%;" class="my-1"><img 
+          id="funceme-header"
+            src="{{ url_for('static', filename='dist/img/logo-unichristus.png') }}" alt=""></div>
+
+        <!-- <h2 class="logo"><a href="http://www.funceme.br"><span class="funceme" title="Funceme"></span></a><a href="http://www.srh.ce.gov.br/"><span class="srh" title="Secretaria de Recursos Hidricos"></span></a></h2> -->
+
+      </div>
+    </div>
+
+    <!-- barra de menu -->
+    <nav class="navbar navbar-expand-md navbar-light container">
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Página Inicial <span class="sr-only">(current)</span></a>
+          </li>
+
+        {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ler-resumo">Resumos</a>
+          </li>
+
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class="col p-0">
+      <img src="{{ url_for('static', filename='dist/img/bg-bottom-menu.png') }}" alt="" class="w-100" style="max-height: 20px;">
+   </div>
+    </header>
+
+        {% block content %}
+
+        {% endblock %}
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul style="display:none;">
+            {% for category, message in messages %}
+                <li class="{{ category }}" data-message="{{ message }}"></li>
+            {% endfor %}
+            </ul>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const messages = document.querySelectorAll('li');
+                    messages.forEach(function(message) {
+                        const category = message.className;
+                        const text = message.getAttribute('data-message');
+
+                        Swal.fire({
+                            icon: category === 'error' ? 'error' : 'success',
+                            title: category.charAt(0).toUpperCase() + category.slice(1),
+                            html: text,
+                            confirmButtonText: 'OK'
+                        });
+                    });
+                });
+            </script>
+        {% endif %}
+        {% endwith %}
+
+        <footer class="container">
+          <p id="footer-text">&copy; Biblioteca Virtual Unich</p>
+        </footer>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{{ url_for('static',filename='plugins/jquery/jquery.min.js') }}" crossorigin="anonymous"></script>
+    <script type="module" src="{{ url_for('static',filename='plugins/popper/popper.min.js') }}"  integrity="sha384-wtNlGLUJ2I0nMcuD4N4C2l3SrJdgaRpeu64hbXM9GHBPIEAQZqtmrvsJZAIL10I0" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static',filename='plugins/bootstrap/js/bootstrap.min.js') }}" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static',filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+</html>

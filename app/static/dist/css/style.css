@@ -1,0 +1,14 @@
+#header-container {
+    height: 95px;
+    background: url("'{{ url_for('static',filename='dist/img/bg-sec-final.svg') }}'")bottom left no-repeat,      linear-gradient(to left, #56BFC9, #24A637 65%);
+    background-size: 35% auto, 100% 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+html, body {
+    height: 100%;
+    margin: 0;
+}
+#funceme-header {
+  width: 100%;
+  height: 85px;
+}

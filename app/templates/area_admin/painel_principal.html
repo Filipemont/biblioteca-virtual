@@ -1,0 +1,67 @@
+{% extends 'area_admin/master.html' %}
+{% block body %}
+{{ super() }}
+
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">HomePage</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{{ admin_view.admin.url }}">Home</a></li>
+            <li class="breadcrumb-item active">HomePage</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        {% if edital_info%}
+        {% for edital in edital_info %}
+        <div class="col-md-6">
+          <div class="card card-widget widget-user-2 shadow-sm">
+            <div class="widget-user-header bg-secondary">
+              <div class="widget-user-image">
+                <img class="img-circle elevation-2" src="/static/dist/img/edital.png" alt="User Avatar">
+              </div>
+              {% if loop.first %}
+                <h3 class="widget-user-username">{{ edital.edital.titulo }}</h3>
+                <h5 class="widget-user-desc">Data Final:{{ edital.edital.data_inscricao_fim.strftime('%d/%m/%Y') }}</h5>
+              {% endif %}
+            </div>
+            <div class="card-footer p-0">
+              <ul class="nav flex-column">
+                {% for area in edital.areas %}
+                <li class="nav-item p-2">
+
+                  <a href="inscricaomodel/?flt0_2={{ area.titulo }}&flt2_3={{ edital.edital.numero }}" class="">
+                    {{ area.titulo }} <span class="float-left badge bg-secondary" style="width: 50px; margin-right: 10px;">{{ area.soma }}</span>
+                  </a>
+
+                  <a alt="Indeferidos" href="inscricaomodel/?flt0_2={{ area.titulo }}&flt2_3={{ edital.edital.numero }}&flt3_20=1" class="">
+                    <span alt="teste" class="float-right badge bg-danger" style="width: 50px; margin-right: 10px;">{{ area.total_indeferido }}</span>
+                  </a>
+
+                  <a href="inscricaomodel/?flt0_2={{ area.titulo }}&flt2_3={{ edital.edital.numero }}&flt3_20=0" class="">
+                    <span class="float-right badge bg-success" style="width: 50px; margin-right: 10px;">{{ area.total_deferido }}</span>
+                  </a>
+
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      {% endif %}
+      </div>
+    </div>
+  </section>
+{% endblock body %}
+
+

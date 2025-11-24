@@ -1,0 +1,11 @@
+.btn-sm {
+      padding: 7px 10px;
+      border: none;
+      background: #636363;
+      cursor: pointer;
+      margin: 1px;
+    }
+.btn-sm.ativo {
+  background: #4CAF50;
+  color: white;
+}

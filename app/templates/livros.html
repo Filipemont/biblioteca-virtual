@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <form class="d-flex" id="search-form">
+                <input class="form-control me-2" type="search" placeholder="Buscar livros" aria-label="Search" id="search-input">
+                <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+        </div>
+    </div>
+    <div class="row" id="livros-container">
+        {% for livro in livros %}
+        <div class="col-md-3 mb-4 livro-card" data-titulo="{{ livro.titulo|lower }}">
+            <div class="card h-100">
+                <img src="{{ url_for('minio_view.get_file_url', filename=livro.capa_url) }}" class="card-img-top" alt="{{ livro.titulo }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ livro.titulo }}</h5>
+                    <p class="card-text">{{ livro.autor }}</p>
+                    <a class="btn btn-success" href="{{ url_for('livros.delete_livro', id=livro.id) }}" role="button"> Ler Livro</a>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+document.getElementById('search-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let searchTerm = document.getElementById('search-input').value.toLowerCase();
+    let livros = document.querySelectorAll('.livro-card');
+    livros.forEach(function(livro) {
+        if (livro.dataset.titulo.includes(searchTerm)) {
+            livro.style.display = 'block';
+        } else {
+            livro.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+#colormaps-container {
+  z-index: 100;
+  padding: 0px 14px;
+  border-radius: 5px;
+  color: #4c4c4c;
+  right: 0;
+  position: fixed;
+}
+.light-theme #colormaps-container {
+  color: #fff;
+}
+
+.colormap {
+  width: 23vw;
+  height: 19px;
+  border-radius: 19px;
+  box-shadow: 0 0 2px 0 #000 !important;
+  padding: 0 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  .colormap-item {
+    font-size: 12px;
+    font-weight: bold;
+    height: inherit;
+    -webkit-background-clip: text;
+    background-clip: text !important;
+    color: transparent;
+    text-align: center;
+    filter: invert(1) grayscale(1) contrast(10) drop-shadow(.05em .05em #4c4c4c);
+  }
+
+}
+.template{
+    display: none;
+  }
+.colormap-label {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  filter: drop-shadow(.02em .02em .02em #4c4c4c);
+  white-space: nowrap;
+  overflow: hidden;
+  display: none;
+}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+{% endblock %}
+
+{% block head_scripts %}
+{% endblock %}
+
+{% block content %}
+<center>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="bookCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for capa in capas %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        {% if capa %}
+                        <img src="{{ url_for('minio_view.get_file_url', filename=capa) }}" class="d-block" style="max-height: 70vh;" alt="Capa do Livro">
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                <a class="carousel-control-prev" href="#bookCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#bookCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</center>
+{% endblock %}
+
+{% block scripts %}
+{% endblock scripts%}

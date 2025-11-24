@@ -1,0 +1,23 @@
+{# templates/macros.html #}
+{% macro render_form_field(field, col_size = 6, id = none) %}
+    {{ field.label(class="form-label my-1 font-weight-bold") }}
+    {{ field(class="form-control col-" ~ col_size ~ " my-1") }}
+
+    {% if field.errors %}
+        <ul style="color: red;" class="ms-2">
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+
+
+{% macro render_check_form_field(field, text) %}
+    <div class="form-check my-3 d-flex">
+        {{ field(class="form-check-input me-2") }}
+        <label class="form-check-label">
+            {{text}}
+        </label>
+    </div>
+{% endmacro %}

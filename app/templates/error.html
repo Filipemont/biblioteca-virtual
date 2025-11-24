@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="error-container">
+   <div class="row">
+      <div class="col d-flex justify-content-end">
+         <img height="200px" width="200px"
+         src="../../static/dist/img/img_umbrella.png"
+      </div>
+      <div class="col"><h1 class="display-1 font-weight-bold">{{error_code}}</h1>
+   <p class="lead">{{error_str}}</p>
+   <a class="btn btn-success" href="/">Voltar à Página Inicial</a></div>
+   </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+   document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("footer-text").style.marginTop = "20px";
+});
+</script>
+{% endblock %}
+

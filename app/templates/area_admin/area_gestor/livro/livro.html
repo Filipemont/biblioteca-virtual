@@ -1,0 +1,42 @@
+{% extends 'area_admin/master.html' %}
+
+{% block body %}
+<div class="d-flex justify-content-end">
+    <a class="btn btn-primary" href="{{ url_for('livros.criar_livro') }}" role="button">
+        Criar um novo livro <i class="fa fa-file" aria-hidden="true" style="right: 0;"></i>
+    </a>
+</div>
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Título</th>
+        <th scope="col">Autor</th>
+        <th scope="col">Editora</th>
+        <th scope="col">Arquivo</th>
+        <th scope="col">Capa</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% if livros %}
+        {% for livro in livros %}
+          <tr>
+            <th scope="row">{{livro.titulo}}</th>
+            <td>{{livro.autor}}</td>
+            <td>{{livro.editora}}</td>
+            <td><a class="btn btn-primary" download href="{{ url_for('livros.download_minio', path=livro.livro_url) }}">Baixar livro</a></td>
+            <td><a class="btn btn-primary" download href="{{ url_for('livros.download_minio', path=livro.capa_url) }}">Baixar capa</a></td>
+            <td>
+                <a class="btn btn-success" href="{{ url_for('livros.editar_livro', id=livro.id) }}" role="button"><i class="fa fa-pencil glyphicon glyphicon-pencil"></i></a>
+                <a class="btn btn-danger" href="{{ url_for('livros.delete_livro', id=livro.id) }}" role="button"><i class="fa fa-trash glyphicon glyphicon-trash"></i></a>
+            </td>
+          </tr>
+        {% endfor %}
+    {% endif %}
+    </tbody>
+  </table>
+  
+{% endblock %}
+
+{% block scripts %}
+{% endblock scripts%}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% from "macros.html" import render_form_field %}
+
+{% block styles %}
+{% endblock %}
+
+{% block head_scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Cadastro de Usuário</h1>
+
+        <form id="form-register" method="POST" action="">
+            {{ form.hidden_tag() }}  <!-- Proteção CSRF -->
+
+            <div>
+                {{ render_form_field(form.name, 6, "name") }}
+                {{ render_form_field(form.email, 6, "email") }}
+                {{ render_form_field(form.confirm_email, 6, "confirm_mail") }}
+                {{ render_form_field(form.password, 6, "password") }}
+                <div id="errorPasswordMessages" style="color: red;"></div>
+                {{ render_form_field(form.confirm_password, 6, "confirm_password") }}
+            </div>
+            <div>
+                {{ form.submit(class="btn btn-primary my-3") }}
+            </div>
+        </form>
+    </div>
+
+    <script type="module" src="../../static/dist/js/pages/register-user.js"></script>
+{% endblock %}

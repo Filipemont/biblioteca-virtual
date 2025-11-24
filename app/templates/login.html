@@ -1,0 +1,102 @@
+{% from "macros.html" import render_form_field %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Previsão | Log in</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='plugins/fontawesome-free/css/all.min.css') }}">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='dist/css/adminlte.min.css') }}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <img class='center'src="{{ url_for('static',filename='dist/img/unichristus.png') }}" width="150px" alt="logo funceme">
+    <p><b>Biblioteca Virtual</b></p>
+  </div>
+  <!-- /.login-logo -->
+
+  <div class="card">
+    <div class="card-body login-card-body">
+
+
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {% endfor %}
+
+        {% else %}
+        <p class="login-box-msg">Faça o Login para iniciar sua sessão.</p>
+      {% endif %}
+    {% endwith %}
+
+  <form id="form-login" action="{{ url_for('login_blueprint.login', next=next) }}" method="post" novalidate>
+      {{ form.hidden_tag() }}
+
+
+        <div class="col-md-12" >
+          {{ render_form_field(form.email, 12) }}
+          {{ render_form_field(form.password, 12) }}
+        </div>
+        <a class="col-md-12 my-5"href="/recoverer_user_password" style="color: rgb(42, 127, 255);">Esqueci minha senha</a>
+
+        <br/>
+        <span>
+          Não possui conta? 
+          <br/>
+          <a class="col-md-12 my-5"href="/register_user" style="color: rgb(42, 127, 255);">Registre-se</a>
+        </span>
+        
+
+        <!-- <div  class="my-3 ml-2">{{ form.recaptcha }}</div> -->
+
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <input type="hidden" name="next" value="admin/ceara">
+            </div>
+          </div>
+          <div class="col-4">
+            {{ form.submit(class="btn btn-primary btn-block") }}
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+
+    <!-- /.login-card-body -->
+  </div >
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="{{ url_for('static',filename='plugins/jquery/jquery.min.js') }}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ url_for('static',filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ url_for('static',filename='dist/js/adminlte.min.js') }}"></script>
+
+<script>
+  $(".alert").alert()
+</script>
+<script src="../../static/dist/js/pages/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% from "macros.html" import render_form_field %}
+
+{% block styles %}
+{% endblock %}
+
+{% block head_scripts %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticação de Usuário</title>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+</head>
+{% endblock %}
+{% block content %}
+<div class="container" style="justify-content: center;">
+
+        <h3 class="col-md-12">Autenticação de usuário</h3>
+
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}  <!-- Proteção CSRF -->
+
+            <div class="col-md-12" >
+                {{ render_form_field(form.codigo) }}
+            </div>
+
+            <div class="col-md-12">
+                {{ form.submit(class="btn btn-primary my-3") }}
+            </div>
+        </form>
+</div>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% endblock %}

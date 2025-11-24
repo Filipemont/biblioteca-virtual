@@ -1,0 +1,85 @@
+#div-camadas{
+    z-index: 100;
+    width: max-content;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 2%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    transition: width 0.4s ease-out;
+}
+#div-camadas #check-fechar-menu-camadas {
+    display: none;
+}
+
+#div-camadas #check-abrir-menu-camadas {
+    display: block;
+}
+
+#div-camadas.active{
+    width: 220px;
+}
+#div-camadas.active #check-fechar-menu-camadas {
+    display: block !important;
+}
+
+#div-camadas.active #check-abrir-menu-camadas {
+    display: none !important;
+}
+
+#submenu-camadas{
+    display: flex;
+    position: absolute;
+    left:0;
+    width: 100%;
+    overflow: hidden;
+    visibility: hidden;
+    transform: scaleY(0);
+    transform-origin: top;
+    opacity: 0;
+    border-radius: 8px;
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+#submenu-camadas.active{
+    border-radius: 2%;
+    width: 220px;
+    visibility: visible;
+    flex-direction: column;
+    transform: scaleY(1);
+    opacity: 1;
+    align-items: center;
+    margin: 38px 0 0 0;
+}
+
+.botao-camada{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.itens-menu {
+    z-index: 100;
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transform: scaleX(0);
+    transform-origin: left;
+    overflow: hidden;
+    width: max-content;
+    margin: 0 0 0 225px;
+    background-color: rgba(0, 0, 0, 0.7);
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+    display: flex;
+}
+
+.itens-menu.active {
+    border-radius: 2%;
+    align-items: center;
+    opacity: 1;
+    visibility: visible;
+    transform: scaleX(1);
+    flex-direction: column;
+    max-height: max-content;
+}

@@ -1,0 +1,40 @@
+{% extends 'area_admin/master.html' %}
+{% from "macros.html" import render_form_field %}
+
+{% block body %}
+<div class="container">
+  <h1>Atualização de Livros da biblioteca Virtual </h1>
+  <h5>Livro: <strong>{{livro.titulo}}</strong></h5>
+
+  <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}  <!-- Proteção CSRF -->
+
+      <div class="form-group">
+        {{ render_form_field(form.titulo, 12, "titulo") }}
+      </div>
+
+      <div class="form-group ">
+          {{ render_form_field(form.autor, 12, "autor") }}
+      </div>
+
+      <div class="form-group">
+          {{ render_form_field(form.editora, 12, "editora") }}
+      </div>
+
+      <div class="form-group">
+        {{ render_form_field(form.capa, 12, "capa") }}
+      </div>
+      <div class="form-group">
+          {{ render_form_field(form.livro, 12, "livro") }}
+      </div>
+      <div class="form-group d-flex justify-content-between">
+          {{ form.submit(class="btn btn-success my-3") }}
+          <a class="btn btn-secondary my-3" href="{{ url_for('livros.listar_livros_criados') }}" role="button">voltar</a>
+      </div>
+  </form>
+</div>
+<script>
+  livro = {{livro | tojson | safe}}
+</script>
+<script src="{{ url_for('static',filename='dist/js/admin/livro/update-livro.js') }}"></script>
+{% endblock %}

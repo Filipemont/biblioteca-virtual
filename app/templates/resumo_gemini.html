@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+{% endblock %}
+
+{% block head_scripts %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-6">
+            <form class="w-100" id="search-form">
+                <div class="input-group">
+                    <input class="form-control rounded-pill" type="search" id="book-name-input" placeholder="Digite o nome do livro" aria-label="Search">
+                    <button class="btn btn-primary rounded-pill ms-2" type="submit" style="background-color: #100068;">
+                        Gerar com IA
+                        <img src="{{ url_for('static',filename='dist/img/gemini-color.png') }}" width="15px" alt="logo gemini">
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-12 col-md-10 col-lg-8" id="summary-container">
+            <!-- Summary will be loaded here -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    $('#search-form').on('submit', function(event) {
+        event.preventDefault();
+        
+        var bookName = $('#book-name-input').val();
+        if (!bookName) {
+            return;
+        }
+
+        var summaryContainer = $('#summary-container');
+        summaryContainer.html(`
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden"></span>
+                    </div>
+                    <p class="mt-2">Gerando resumo...</p>
+                </div>
+            </div>
+        `);
+
+        $.ajax({
+            url: "{{ url_for('gemini_bp.get_resumo_livro') }}",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ 'nome_do_livro': bookName }),
+            success: function(response) {
+                var sanitizedResumo = $('<div/>').text(response.resumo).html();
+                var summaryCard = `
+                    <div class="card">
+                        <div class="card-header">
+                            Resumo do Livro
+                        </div>
+                        <div class="card-body">
+                            <pre style="white-space: pre-wrap;">${sanitizedResumo}</pre>
+                        </div>
+                    </div>
+                `;
+                summaryContainer.html(summaryCard);
+            },
+            error: function() {
+                var errorCard = `
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white">
+                            Erro
+                        </div>
+                        <div class="card-body text-danger">
+                            <p>Não foi possível gerar o resumo. Tente novamente mais tarde.</p>
+                        </div>
+                    </div>
+                `;
+                summaryContainer.html(errorCard);
+            }
+        });
+    });
+});
+</script>
+{% endblock scripts%}
