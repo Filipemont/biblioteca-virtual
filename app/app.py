@@ -1,4 +1,5 @@
 from view.homepage import web_blueprint
+from view.leitura_view import leitura_view
 from view.login import login_blueprint
 from view.recoverer_user_password import recoverer_user_password_blueprint
 from view.register_user_view import register_user_blueprint
@@ -39,6 +40,7 @@ def create_app():
         return session.get('lang', 'pt')
 
     app.register_blueprint(web_blueprint)
+    app.register_blueprint(leitura_view)
     app.register_blueprint(login_blueprint)
     app.register_blueprint(recoverer_user_password_blueprint)
     app.register_blueprint(register_user_blueprint)

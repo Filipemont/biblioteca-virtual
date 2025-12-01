@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block styles %}
+<style>
+    livro {
+      background-color: #333;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    #canvas-container {
+      border: 1px solid #000;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      margin-top: 20px;
+      /* Define um tamanho máximo para não estourar a tela */
+      max-width: 100%; 
+      overflow: auto;
+    }
+
+    .controls {
+      background: #444;
+      padding: 10px 20px;
+      border-radius: 5px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    button {
+      padding: 8px 15px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      font-weight: bold;
+    }
+
+    button:disabled {
+      background-color: #666;
+      cursor: not-allowed;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<livro>
+  <div class="controls">
+    <button id="prev">Anterior</button>
+    <span>Página: <span id="page_num"></span> / <span id="page_count"></span></span>
+    <button id="next">Próximo</button>
+  </div>
+
+  <div id="canvas-container">
+    <canvas id="the-canvas"></canvas>
+  </div>
+</livro>
+{% endblock %}
+{% block scripts %}
+<script>
+  url = {{livro_link | tojson | safe}}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    let pdfDoc = null,
+        pageNum = 1,
+        pageRendering = false,
+        pageNumPending = null,
+        scale = 1.5,
+        canvas = document.getElementById('the-canvas'),
+        ctx = canvas.getContext('2d');
+
+    function renderPage(num) {
+      pageRendering = true;
+        pdfDoc.getPage(num).then(function(page) {
+        var viewport = page.getViewport({scale: scale});
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        var renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+        var renderTask = page.render(renderContext);
+        renderTask.promise.then(function() {
+          pageRendering = false;
+          
+          if (pageNumPending !== null) {
+            renderPage(pageNumPending);
+            pageNumPending = null;
+          }
+        });
+      });
+
+      document.getElementById('page_num').textContent = num;
+      
+      document.getElementById('prev').disabled = num <= 1;
+      document.getElementById('next').disabled = num >= pdfDoc.numPages;
+    }
+
+    function queueRenderPage(num) {
+      if (pageRendering) {
+        pageNumPending = num;
+      } else {
+        renderPage(num);
+      }
+    }
+
+    function onPrevPage() {
+      if (pageNum <= 1) {
+        return;
+      }
+      pageNum--;
+      queueRenderPage(pageNum);
+    }
+
+    function onNextPage() {
+      if (pageNum >= pdfDoc.numPages) {
+        return;
+      }
+      pageNum++;
+      queueRenderPage(pageNum);
+    }
+
+    document.getElementById('prev').addEventListener('click', onPrevPage);
+    document.getElementById('next').addEventListener('click', onNextPage);
+    
+    canvas.addEventListener('contextmenu', event => event.preventDefault());
+
+    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+      pdfDoc = pdfDoc_;
+      document.getElementById('page_count').textContent = pdfDoc.numPages;
+
+      renderPage(pageNum);
+    }).catch(function(error) {
+        console.error('Erro ao carregar o PDF:', error);
+        alert('Erro ao carregar o documento. Verifique o console.');
+    });
+  </script>
+{% endblock %}

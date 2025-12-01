@@ -8,7 +8,7 @@ from minio.error import S3Error  # type: ignore
 
 class MinioUtil:
     minio_client = Minio(
-        os.getenv('MINIO_URL'),
+        os.getenv('MINIO_URL_EXTERNO'),
         access_key=os.getenv("MINIO_ACCESS_KEY"),
         secret_key=os.getenv("MINIO_SECRET_KEY"),
         region="f3",
@@ -31,6 +31,13 @@ class MinioUtil:
 
     def get_minio_object_data(self, filename: str):
         try:
+            self.minio_client = Minio(
+                os.getenv('MINIO_URL_INTERNO'),
+                access_key=os.getenv("MINIO_ACCESS_KEY"),
+                secret_key=os.getenv("MINIO_SECRET_KEY"),
+                region="f3",
+                secure=False,
+            )
             data: object = self.minio_client.get_object("biblioteca", filename)
             return data
         except S3Error as e:

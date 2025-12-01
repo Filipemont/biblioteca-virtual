@@ -14,11 +14,11 @@
         {% for livro in livros %}
         <div class="col-md-3 mb-4 livro-card" data-titulo="{{ livro.titulo|lower }}">
             <div class="card h-100">
-                <img src="{{ url_for('minio_view.get_file_url', filename=livro.capa_url) }}" class="card-img-top" alt="{{ livro.titulo }}">
+                <img style="min-height: 356.55px; max-height: 356.55px; " src="{{ url_for('minio_view.get_file_url', filename=livro.capa_url) }}" class="card-img-top" alt="{{ livro.titulo }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ livro.titulo }}</h5>
                     <p class="card-text">{{ livro.autor }}</p>
-                    <a class="btn btn-success" href="{{ url_for('livros.delete_livro', id=livro.id) }}" role="button"> Ler Livro</a>
+                    <a class="btn btn-success" href="{{ url_for('leitura_view.ler_livro', id_livro=livro.id) }}" role="button"> Ler Livro</a>
 
                 </div>
             </div>

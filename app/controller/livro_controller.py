@@ -160,13 +160,26 @@ class LivroController:
 
     @staticmethod
     def get_random_book_covers():
-        livros = LivroModel.query.order_by(func.random()).limit(10).all()
+        livros = LivroModel.query.order_by(func.random()).limit(5).all()
         capas = [DataEncrypt.get_decrypted_aead(livro.capa_url) for livro in livros]
         return capas
     
     @staticmethod
     def get_livro_by_codigo(codigo: int) -> object:
         return LivroModel.query.filter_by(id=codigo).first()
+    
+    @staticmethod
+    def get_livro_decrypted_by_codigo(codigo: int) -> list:
+        livro = LivroModel.query.filter_by(id=codigo).first()
+        if livro:
+            return {
+                    'id': livro.id,
+                    'titulo': livro.titulo,
+                    'autor': livro.autor,
+                    'editora': livro.editora,
+                    'capa_url': DataEncrypt.get_decrypted_aead(livro.capa_url),
+                    'livro_url': DataEncrypt.get_decrypted_aead(livro.livro_url)
+                }
     
     @staticmethod
     def get_livro_dict_by_codigo(codigo: int) -> dict:

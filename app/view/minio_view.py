@@ -10,7 +10,7 @@ minio_view = Blueprint("minio_view", __name__, url_prefix="/media")
 def get_file_url(filename):
     minio_util = MinioUtil()
     try:
-        response = minio_util.minio_client.get_object("biblioteca", filename)
+        response = minio_util.get_minio_object_data(filename)
         
         return Response(
             stream_with_context(response.stream(32*1024)),
