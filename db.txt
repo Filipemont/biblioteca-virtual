@@ -1,0 +1,63 @@
+CREATE SCHEMA IF NOT EXISTS db_biblioteca;
+
+CREATE TABLE db_biblioteca.tb_usuario (
+    codigo SERIAL PRIMARY KEY,
+    nome VARCHAR(255),
+    email VARCHAR(255),
+    senha VARCHAR(32),
+    status INTEGER,
+    salt BYTEA,
+    atualizado_em TIMESTAMP
+);
+
+CREATE TABLE db_biblioteca.tb_livro (
+    id SERIAL PRIMARY KEY,
+    titulo VARCHAR(255),
+    autor VARCHAR(255),
+    editora VARCHAR(255),
+    capa_url VARCHAR(255),
+    livro_url VARCHAR(255),
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em TIMESTAMP
+);
+
+CREATE TABLE db_biblioteca.tb_papel (
+    codigo SERIAL PRIMARY KEY,
+    tipo VARCHAR(50),
+    descricao VARCHAR(255)
+);
+
+CREATE TABLE db_biblioteca.tb_codigo_autenticacao (
+    codigo SERIAL PRIMARY KEY,
+    horario_chave INTEGER,
+    usuario_codigo INTEGER UNIQUE, -- unique=True no model
+    secret VARCHAR(32),
+    CONSTRAINT fk_autenticacao_usuario 
+        FOREIGN KEY (usuario_codigo) 
+        REFERENCES db_biblioteca.tb_usuario (codigo)
+);
+
+CREATE TABLE db_biblioteca.tb_usuario_papel (
+    codigo SERIAL PRIMARY KEY,
+    usuario_codigo INTEGER,
+    papel_codigo INTEGER,
+    CONSTRAINT fk_usuariopapel_usuario 
+        FOREIGN KEY (usuario_codigo) 
+        REFERENCES db_biblioteca.tb_usuario (codigo),
+    CONSTRAINT fk_usuariopapel_papel 
+        FOREIGN KEY (papel_codigo) 
+        REFERENCES db_biblioteca.tb_papel (codigo)
+);
+
+CREATE TABLE db_biblioteca.tb_usuario_livro (
+    codigo SERIAL PRIMARY KEY,
+    usuario_codigo INTEGER,
+    livro_codigo INTEGER,
+    ult_pagina INTEGER,
+    CONSTRAINT fk_usuariolivro_usuario 
+        FOREIGN KEY (usuario_codigo) 
+        REFERENCES db_biblioteca.tb_usuario (codigo),
+    CONSTRAINT fk_usuariolivro_livro 
+        FOREIGN KEY (livro_codigo) 
+        REFERENCES db_biblioteca.tb_livro (id)
+);

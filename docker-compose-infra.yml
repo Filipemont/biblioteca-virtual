@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    volumes:
+      - /data/data-minio:/data:Z
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: 6EC59F753817C356A8F9BD8FA7DF3
+      MINIO_ROOT_PASSWORD: 29FD9BC25BA828A8BFEE125C17F3D
+      MINIO_SERVER_URL: "http://localhost:9000"
+    command: server /data --console-address ":9001"
+    networks:
+      - biblioteca
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: polls
+    ports:
+      - "5432:5432"
+    volumes:
+      - /data/data-postgres:/var/lib/postgresql/data:Z
+    networks:
+      - biblioteca
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: filipemonteirolourenco@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    volumes:
+      - /data/data-pgadmin:/var/lib/pgadmin:Z
+    networks:
+      - biblioteca
+
+networks:
+  biblioteca:
+    external: true
+

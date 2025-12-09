@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    working_dir: /app
+    command: python3 app.py
+    container_name: biblioteca
+    env_file:
+      - .env
+    ports:
+      - "5006:5006"
+    volumes:
+      - ./app:/app
+    networks:
+      - biblioteca
+
+networks:
+  biblioteca:
+    external: true
+
